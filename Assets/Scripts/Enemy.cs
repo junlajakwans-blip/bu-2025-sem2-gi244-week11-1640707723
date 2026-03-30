@@ -13,11 +13,24 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
     }
-
+    void Update()
+    {
+        // ถ้าตกลงไปต่ำกว่า -2
+        if (transform.position.y < -2f)
+        {
+            Destroy(gameObject);
+        }
+    }
     // Update is called once per frame
     void FixedUpdate() 
     {
-        if (isStunned || isKnockback)
+        if (isStunned)
+        {
+            rb.linearVelocity = Vector3.zero;
+            return;
+        }
+
+        if (isKnockback)
         {
             return;
         }

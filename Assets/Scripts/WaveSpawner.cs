@@ -19,6 +19,7 @@ public class WaveSpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public GameObject enemyPrefab;
     public GameObject powerUpPrefab;
+    public float powerUpHeight = 1f;
 
     void Start()
     {
@@ -35,7 +36,8 @@ public class WaveSpawner : MonoBehaviour
             for (int p = 0; p < w.numberOfPowerUp; p++)
             {
                 int rand = Random.Range(0, spawnPoints.Length);
-                Instantiate(powerUpPrefab, spawnPoints[rand].position, Quaternion.identity);
+                Vector3 pos = spawnPoints[rand].position + Vector3.up * powerUpHeight;
+                Instantiate(powerUpPrefab, pos, Quaternion.identity);
             }
 
             // รอเวลาตามที่กำหนดก่อนเริ่มสปาวน์ศัตรู
