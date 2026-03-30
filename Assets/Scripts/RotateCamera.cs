@@ -12,9 +12,10 @@ public class RotateCamera : MonoBehaviour
     {
         moveAction = InputSystem.actions.FindAction("Move");
     }
-
     void Update()
     {
+        float input = moveAction.ReadValue<Vector2>().x;
 
+        transform.Rotate(Vector3.up, input * rotationSpeed * Time.deltaTime);
     }
 }

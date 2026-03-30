@@ -25,6 +25,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 input = moveAction.ReadValue<Vector2>();
 
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 right = Camera.main.transform.right;
+
+        forward.y = 0;
+        right.y = 0;
+
+        Vector3 moveDir = forward * input.y + right * input.x;
+
+        rb.AddForce(moveDir * speed);
     }
 }
