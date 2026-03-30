@@ -18,19 +18,36 @@ public class StunPowerUp : MonoBehaviour
     {
         Enemy[] enemies = FindObjectsOfType<Enemy>();
 
-        // Stun all enemies
+        // knockback ก่อน 
         foreach (Enemy e in enemies)
         {
-            e.isStunned = true;
+            if (e != null)
+            {
+                e.Knockback(transform.position, 200f);
+            }
+        }
+
+        // รอให้ knockback ทำงานก่อนจะ stun จริง ๆ
+        yield return new WaitForSeconds(0.3f);
+
+        // stun ศัตรูทั้งหมด
+        foreach (Enemy e in enemies)
+        {
+            if (e != null)
+            {
+                e.isStunned = true;
+            }
         }
 
         yield return new WaitForSeconds(stunDuration);
 
-        // stop stunning all enemies
+        // ปลด stun
         foreach (Enemy e in enemies)
         {
             if (e != null)
+            {
                 e.isStunned = false;
+            }
         }
     }
 }

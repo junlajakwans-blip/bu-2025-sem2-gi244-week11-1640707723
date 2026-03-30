@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     private GameObject player;
     public bool isStunned = false;
+    public bool isKnockback = false;
 
     void Start()
     {
@@ -14,16 +15,35 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate() 
     {
-        if (isStunned)
+        if (isStunned || isKnockback)
         {
-            rb.linearVelocity = Vector3.zero; // หยุดจริง ๆ
             return;
         }
 
+        if (player == null) return;
+
         Vector3 direction = (player.transform.position - transform.position).normalized;
         rb.AddForce(direction * speed);
+    }
 
+    public void Knockback(Vector3 sourcePosition, float force)
+    {
+        if (rb != null)
+        {
+            isKnockback = true;
+
+            rb.linearVelocity = Vector3.zero; 
+            rb.AddExplosionForce(force, sourcePosition, 2f, 0.2f, ForceMode.Impulse);
+
+            StartCoroutine(RecoverFromKnockback());
+        }
+    }
+
+    private System.Collections.IEnumerator RecoverFromKnockback()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isKnockback = false;
     }
 }
